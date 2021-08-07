@@ -1,0 +1,17 @@
+{
+  "name": "video-recommendation",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server.js --ignore client",
+    "client": "cd client && npm start",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "nodemon": "^2.0.12"
+  }
+}
