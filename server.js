@@ -3,6 +3,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+const quotes = require('./data.json');
+
 app.get('/api/hello', (req, res) => {
   res.status(200).json('Greetings from Zhombeni');
 });

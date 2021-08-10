@@ -1,38 +1,208 @@
-.App {
+/*UNIVERSAL CSS*/
+:root {
+  --dark-text-color: white;
+  --light-text-color: black;
+  --dark-background: black;
+  --light-background: white;
+  --light-shadow: grey;
+  --text-highlight-color: rgb(3, 12, 6);
+  --icons-color: rgb(16, 88, 63);
+  --button-background: rgb(174, 206, 119);
+  --warning-color: rgb(245, 121, 121);
+  --pressed-button: rgb(20, 7, 204);
+}
+@import url('https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap');
+
+.main-container {
+  margin: 1rem;
+  font-family: 'Fredericka the Great', cursive;
+}
+
+.side-margins {
+  width: 95%;
+  margin-right: 2.5%;
+  margin-left: 2.5%;
+}
+.sharp-border-radius {
+  border-radius: 0.2rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  padding-right: 0.4rem;
+  padding-left: 0.4rem;
+}
+
+/*HEADER HEADER HEADER*/
+/*HEADER HEADER HEADER*/
+.navbar {
+  margin-bottom: 1.3rem;
+  display: flex;
+  flex-direction: column;
+}
+.navbar-nav,
+.add-vid-button-toggler {
+  font-weight: 600;
+}
+.logo-text {
+  margin-left: 1rem;
+  font-size: 2rem;
+}
+
+.add-vid-button-toggler {
+  outline: 0;
+}
+
+.add-video-container {
+  display: flex;
+  flex-direction: row;
+  justify-items: first baseline;
+}
+.add-video-url-container {
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+.add-video-author-container {
+  margin-right: 1rem;
+}
+.add-video-button {
+  justify-self: baseline;
+}
+
+/*APP.JS CSS*/
+/*APP.JS CSS*/
+.all-cards-container {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 32% 32% 32%;
+}
+
+.empty-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.empty-text {
+  color: gray;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+/*VIDEO CARD CSS*/
+/*VIDEO CARD CSS*/
+.card-container {
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  padding: 0.7rem;
+}
+
+.video-container {
+  margin-bottom: 0.3rem;
+}
+
+.video-frame {
+  width: 100%;
+  height: 15rem;
+}
+
+.video-title {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 0.4rem;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.divider-line {
+  color: black;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.title-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  min-height: 4.5rem;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.actions-container {
+  display: grid;
+  grid-gap: 1%;
+  grid-template-columns: 39% 19% 19% 19%;
+  padding-top: 0.3rem;
+  margin-bottom: 0.8rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.author-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.user-icon {
+  color: var(--icons-color);
+}
+
+.author-name {
+  color: var(--text-highlight-color);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 0.3rem;
+}
+
+.like-container {
+  background-color: unset;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border: hidden;
+  outline: 0 !important;
+}
+.like-count {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.like-icon {
+  margin-right: 0.3rem;
+}
+
+.dislike-container {
+  background-color: unset;
+  border: hidden;
+  outline: 0 !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.dislike-count {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.dislike-icon {
+  margin-right: 0.3rem;
+}
+
+.delete-container {
+  background-color: unset;
+  border: hidden;
+  outline: 0 !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.delete-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.delete-icon {
+  margin-right: 0.3rem;
+}
+
+.active-button {
+  color: var(--pressed-button);
+}
+.inactive-button {
+  color: rgb(110, 109, 109);
 }
