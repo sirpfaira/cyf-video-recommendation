@@ -99,25 +99,37 @@ const App = () => {
     const author = data.get('author');
 
     if (title && url) {
-      let tempArr = [...videos];
-      tempArr.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0));
-      const newVideo = {
-        id: tempArr[tempArr.length - 1].id + 1,
-        title: title,
-        url: url,
-        likes: 0,
-        dislikes: 0,
-        uploader: author || 'Anonymous',
-      };
-      console.log(newVideo);
-      //tempArr.push(newVideo);
-      tempArr.splice(0, 0, newVideo);
-      setVideos(tempArr);
+      if (url.includes('https://www.youtube.com/watch?v=')) {
+        let tempArr = [...videos];
+        tempArr.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0));
+        const newVideo = {
+          id: tempArr[tempArr.length - 1].id + 1,
+          title: title,
+          url: url,
+          likes: 0,
+          dislikes: 0,
+          uploader: author || 'Anonymous',
+        };
+        //console.log(newVideo);
+        //tempArr.push(newVideo);
+        Array.from(document.querySelectorAll('input')).forEach(
+          (input) => (input.value = '')
+        );
+
+        tempArr.splice(0, 0, newVideo);
+        setVideos(tempArr);
+      } else {
+        alert('Invalid Url!');
+      }
+    } else {
+      alert('Fill all required fields!');
     }
   };
 
   if (videos.length > 0) {
-    videos.sort((a, b) => (a.id > b.id ? -1 : b.id > a.id ? 1 : 0));
+    //videos.sort((a, b) => (a.id > b.id ? -1 : b.id > a.id ? 1 : 0));
+    videos.sort((a, b) => (a.likes > b.likes ? -1 : b.likes > a.likes ? 1 : 0));
+
     return (
       <div className='main-container'>
         <Header addVideo={addVideo} />

@@ -104,7 +104,7 @@ const Header = ({ addVideo }) => {
         </div>
         <div className='add-video-button-container form-outline'>
           <button
-            className='btn btn-success add-video-button form-control'
+            className='btn btn-secondary add-video-button form-control'
             id='submit-button'
             type='submit'
           >

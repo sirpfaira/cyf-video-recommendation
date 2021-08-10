@@ -8,6 +8,7 @@
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
     "express": "^4.17.1"
   },
   "devDependencies": {
