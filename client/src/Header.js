@@ -42,7 +42,7 @@ const Header = ({ addVideo }) => {
                 data-toggle='collapse'
                 data-target='#addVideo'
                 aria-expanded='false'
-                aria-controls='collapseExample'
+                aria-controls='addVideo'
               >
                 Add Video
               </button>

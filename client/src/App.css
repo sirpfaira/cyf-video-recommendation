@@ -206,3 +206,66 @@
 .inactive-button {
   color: rgb(110, 109, 109);
 }
+
+/* MEDIA QUERIES */
+@media (max-width: 1100px) {
+  .actions-container {
+    display: grid;
+    grid-gap: 1%;
+    grid-template-columns: auto auto;
+    padding-top: 0.3rem;
+    margin-bottom: 0.8rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .all-cards-container {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: 48% 48%;
+  }
+}
+
+@media (max-width: 650px) {
+  .actions-container {
+    display: grid;
+    grid-gap: 1%;
+    grid-template-columns: auto auto;
+    padding-top: 0.3rem;
+    margin-bottom: 0.8rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .all-cards-container {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: 96%;
+  }
+}
+
+@media (max-width: 370px) {
+  .all-cards-container {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: 96%;
+  }
+
+  .actions-container {
+    display: grid;
+    grid-gap: 1%;
+    grid-template-columns: 96%;
+    padding-top: 0.3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .delete-container {
+    background-color: unset;
+    border: hidden;
+    outline: 0 !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 0.7rem;
+  }
+}
