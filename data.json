@@ -3,8 +3,8 @@
     "id": 1,
     "title": "Never Gonna Give You Up",
     "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "likes": 23,
-   "dislikes": 2,
+    "likes": 2345487,
+   "dislikes": 24,
     "uploader": "Simba Pfaira"
   },
   {
@@ -20,15 +20,15 @@
     "title": "Mac & Cheese | Basics with Babish",
     "url": "https://www.youtube.com/watch?v=FUeyrEN14Rk",
     "likes": 790789,
-   "dislikes": 950000,
+   "dislikes": 9500,
     "uploader": "Carl Master Chibaba Chenyuchi"
   },
   {
     "id": 4,
     "title": "Videos for Cats to Watch - 8 Hour Bird Bonanza",
     "url": "https://www.youtube.com/watch?v=xbs7FT7dXYc",
-    "likes": 3468798563,
-   "dislikes": 567789,
+    "likes": 7468798,
+   "dislikes": 567,
     "uploader": "Cat Lover"
   },
   {
@@ -36,9 +36,9 @@
     "title":
       "Learn Unity - Beginner's Game Development Course For Those People Who Love Games like Me And Naison Chikati",
     "url": "https://www.youtube.com/watch?v=gB1F9G0JXOo",
-    "likes": 78234563,
-   "dislikes": 22345,
-    "uploader": "Game Boy"
+    "likes": 983423,
+   "dislikes": 125345,
+    "uploader": "Game Boy In The Hood"
   },
   {
     "id": 6,
@@ -68,7 +68,7 @@
     "id": 9,
     "title": "Why the Tour de France is so brutal",
     "url": "https://www.youtube.com/watch?v=ZacOS8NBK6U",
-   "likes": 6356,
+   "likes": 67356,
    "dislikes": 73,
     "uploader": "Adrian"
   }

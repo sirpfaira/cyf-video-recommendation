@@ -1,12 +1,29 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import VideoCard from './VideoCard';
 import Header from './Header';
 
 const App = () => {
-  const [videos, setVideos] = useState(fetchedVideos);
+  const [videos, setVideos] = useState([]);
   const [likedVideos, setLikedVideos] = useState([]);
   const [dislikedVideos, setDislikedVideos] = useState([]);
+  const [descending, setDescending] = useState(true);
+
+  useEffect(() => {
+    const callApi = async () => {
+      const res = await fetch(`/videos?order=${descending ? 'desc' : 'asc'}`);
+      const body = await res.json();
+      if (res.status !== 200) throw Error(body.message);
+      return body;
+    };
+
+    callApi()
+      .then((data) => {
+        //console.log(`Data: ${data}`);
+        setVideos(data);
+      })
+      .catch((err) => console.log(err));
+  }, [descending]);
 
   const deleteVideo = (e) => {
     if (videos.length > 1) {
@@ -101,22 +118,35 @@ const App = () => {
     if (title && url) {
       if (url.includes('https://www.youtube.com/watch?v=')) {
         let tempArr = [...videos];
-        tempArr.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0));
-        const newVideo = {
-          id: tempArr[tempArr.length - 1].id + 1,
-          title: title,
-          url: url,
-          likes: 0,
-          dislikes: 0,
-          uploader: author || 'Anonymous',
-        };
+        let newVideo = {};
+        if (tempArr.length > 0) {
+          tempArr.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0));
+          newVideo = {
+            id: tempArr[tempArr.length - 1].id + 1,
+            title: title,
+            url: url,
+            likes: 0,
+            dislikes: 0,
+            uploader: author || 'Anonymous',
+          };
+        } else {
+          newVideo = {
+            id: 1,
+            title: title,
+            url: url,
+            likes: 0,
+            dislikes: 0,
+            uploader: author || 'Anonymous',
+          };
+        }
+
         //console.log(newVideo);
-        //tempArr.push(newVideo);
+        tempArr.push(newVideo);
         Array.from(document.querySelectorAll('input')).forEach(
           (input) => (input.value = '')
         );
 
-        tempArr.splice(0, 0, newVideo);
+        //tempArr.splice(0, 0, newVideo); //To add recently added video on top of the array list
         setVideos(tempArr);
       } else {
         alert('Invalid Url!');
@@ -126,13 +156,17 @@ const App = () => {
     }
   };
 
+  const changeSortOrder = () => {
+    setDescending(!descending);
+  };
+
   if (videos.length > 0) {
     //videos.sort((a, b) => (a.id > b.id ? -1 : b.id > a.id ? 1 : 0));
-    videos.sort((a, b) => (a.likes > b.likes ? -1 : b.likes > a.likes ? 1 : 0));
+    //videos.sort((a, b) => (a.likes > b.likes ? -1 : b.likes > a.likes ? 1 : 0)); //DESC
 
     return (
       <div className='main-container'>
-        <Header addVideo={addVideo} />
+        <Header addVideo={addVideo} changeSortOrder={changeSortOrder} />
         <div className='all-cards-container'>
           {videos.map((video, index) => (
             <VideoCard
@@ -151,6 +185,7 @@ const App = () => {
   } else {
     return (
       <div className='main-container'>
+        <Header addVideo={addVideo} />
         <div className='empty-container'>
           <p className='empty-text'>
             There are no videos to show please click on add video to create a
@@ -162,6 +197,7 @@ const App = () => {
   }
 };
 
+/*
 const fetchedVideos = [
   {
     id: 1,
@@ -204,5 +240,5 @@ const fetchedVideos = [
     dislikes: 22345,
     uploader: 'Game Boy',
   },
-];
+];*/
 export default App;

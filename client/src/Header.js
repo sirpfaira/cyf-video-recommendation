@@ -2,7 +2,7 @@ import './App.css';
 import React from 'react';
 import Logo from './logo.png';
 
-const Header = ({ addVideo }) => {
+const Header = ({ addVideo, changeSortOrder }) => {
   return (
     <nav className='navbar navbar-expand-lg py-3 navbar-light shadow-lg  bg-white rounded sticky-top'>
       <div className='container'>
@@ -36,6 +36,26 @@ const Header = ({ addVideo }) => {
 
         <div id='navbarSupportedContent' className='collapse navbar-collapse'>
           <ul className='navbar-nav ml-auto'>
+            <li className='nav-item'>
+              <div className='switch-container'>
+                <div className='switch-title-div'>
+                  <span className='switch-title'>Sort Order</span>
+                </div>
+                <div className='toggle-button-cover'>
+                  <div className='button-cover'>
+                    <div className='button r' id='button-3'>
+                      <input
+                        type='checkbox'
+                        className='checkbox'
+                        onChange={changeSortOrder}
+                      />
+                      <div className='knobs'></div>
+                      <div className='layer'></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
             <li className='nav-item'>
               <button
                 className='btn add-vid-button-toggler'

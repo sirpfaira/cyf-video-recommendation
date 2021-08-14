@@ -3,6 +3,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+const cors = require('cors');
+app.use(cors());
+
 const videos = require('./data.json');
 
 app.get('/', (req, res) => {
@@ -10,6 +13,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/videos', (req, res) => {
+  const { order } = req.query;
+  if (order === 'desc') {
+    videos.sort((a, b) => (a.likes > b.likes ? -1 : b.likes > a.likes ? 1 : 0));
+  } else if (order === 'asc') {
+    videos.sort((a, b) => (a.likes > b.likes ? 1 : b.likes > a.likes ? -1 : 0));
+  }
   res.status(200).json(videos);
 });
 
