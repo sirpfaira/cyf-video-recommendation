@@ -6,70 +6,95 @@ app.use(express.urlencoded({ extended: false }));
 const cors = require('cors');
 app.use(cors());
 
+require('dotenv').config();
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
+
 const videos = require('./data.json');
 
 app.get('/', (req, res) => {
-  res.status(200).json('You have hit the video recommendation API');
+  res
+    .status(200)
+    .json('You have hit the video recommendation API. Go to /videos');
 });
 
-app.get('/videos', (req, res) => {
+app.get('/videos', async (req, res) => {
   const { order } = req.query;
-  if (order === 'desc') {
-    videos.sort((a, b) => (a.likes > b.likes ? -1 : b.likes > a.likes ? 1 : 0));
-  } else if (order === 'asc') {
-    videos.sort((a, b) => (a.likes > b.likes ? 1 : b.likes > a.likes ? -1 : 0));
+  let query = `SELECT * FROM videos`;
+
+  if (order === 'asc') {
+    query = `SELECT * FROM videos ORDER BY likes ASC`;
+  } else if (order === 'desc') {
+    query = `SELECT * FROM videos ORDER BY likes DESC`;
   }
-  res.status(200).json(videos);
+  await pool
+    .query(query)
+    .then((result) => res.status(200).json(result.rows))
+    .catch((e) => {
+      res.status(400).json(`An error occurred!`);
+      console.log(e);
+    });
 });
 
-app.get('/videos/:videoId', (req, res) => {
+app.get('/videos/:videoId', async (req, res) => {
   const { videoId } = req.params;
-  const video = videos.find((vid) => vid.id == videoId);
-  video
-    ? res.status(200).json(video)
-    : res.status(404).send(`Video with ID: "${videoId}" was not found`);
+
+  await pool
+    .query('SELECT * FROM videos WHERE id = $1', [videoId])
+    .then((result) => res.json(result.rows))
+    .catch((e) => {
+      res.status(400).json(`An error occurred!`);
+      console.log(e);
+    });
 });
 
-app.post('/videos', (req, res) => {
+app.post('/videos', async (req, res) => {
   try {
     const { title, url, uploader } = req.body;
     if (title && url) {
-      const newVideo = {
-        id: getId(),
-        title: title,
-        url: url,
-        author: uploader || 'Anonymous',
-        likes: 0,
-        dislikes: 0,
-      };
-      videos.push(newVideo);
-      res.send(`Video was added. Id: "${newVideo.id}"`);
+      await pool.query(
+        `INSERT INTO videos (title, url, uploader, likes, dislikes ) VALUES ($1, $2 ,$3, $4, $5)`,
+        [title, url, uploader || 'Anonymous', 0, 0]
+      );
+      res.send(`Video was added successfully!`);
     } else {
       res.send(`You should supply all required fields!`);
     }
-  } catch (error) {}
-  console.log(req.body);
-  res.status(500).send(`Error video could not be uploaded to our servers`);
-});
-
-app.delete('/videos/:videoId', function (req, res) {
-  const { videoId } = req.params;
-  const video = videos.find((vid) => vid.id == videoId);
-
-  if (video) {
-    videos.splice(videos.indexOf(video), 1);
-    res.send(`Video #${videoId} deleted!`);
-  } else {
-    res.status(404).send(`Video with ID: ${videoId} was not found`);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(`Error video could not be uploaded to our servers`);
   }
 });
 
-const getId = () => {
-  const sortedArr = videos.sort((a, b) =>
-    a.id > b.id ? 1 : b.id > a.id ? -1 : 0
-  );
-  return sortedArr[sortedArr.length - 1].id + 1;
-};
+app.delete('/videos/:videoId', async (req, res) => {
+  const { videoId } = req.params;
+  try {
+    const myVideo = await pool.query(`SELECT * FROM videos WHERE id = $1`, [
+      videoId,
+    ]);
+    if (myVideo.rowCount > 0) {
+      await pool.query(`DELETE FROM videos WHERE id = $1`, [videoId]);
+      res.status(200).json(`Video was deleted successfully!`);
+    } else {
+      res
+        .status(400)
+        .json(`The provided video ID '${videoId}' does not exist!`);
+    }
+  } catch (e) {
+    res.status(400).json(`An error occurred!`);
+    console.log(e);
+  }
+});
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+
+//postgresql-defined-56626

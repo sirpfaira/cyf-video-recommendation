@@ -10,6 +10,7 @@ const App = () => {
   const [descending, setDescending] = useState(true);
 
   useEffect(() => {
+    console.log(`run: ${descending}`);
     const callApi = async () => {
       const res = await fetch(`/videos?order=${descending ? 'desc' : 'asc'}`);
       const body = await res.json();
@@ -25,28 +26,18 @@ const App = () => {
       .catch((err) => console.log(err));
   }, [descending]);
 
-  const deleteVideo = (e) => {
+  const deleteVideo = async (e) => {
     if (videos.length > 1) {
       const tempArr = [...videos];
       let targetId = Number(e.currentTarget.getAttribute('data-id'));
 
       if (targetId) {
-        let targetIndex = -1;
-        for (var x = 0; x < tempArr.length; x++) {
-          if (targetId === tempArr[x].id) {
-            targetIndex = x;
-            break;
-          }
-        }
-
-        if (targetIndex >= 0) {
-          tempArr.splice(targetIndex, 1);
-          setLikedVideos(likedVideos.filter((id) => id !== targetId));
-          setDislikedVideos(dislikedVideos.filter((id) => id !== targetId));
-          setVideos(tempArr);
-        } else {
-          console.log(`Id not found!`);
-        }
+        await fetch(`/videos/${targetId}`, {
+          method: 'DELETE',
+        });
+        setVideos(tempArr.filter((vid) => vid.id !== targetId));
+      } else {
+        console.log(`Id not found!`);
       }
     } else {
       setVideos([]);
@@ -108,7 +99,7 @@ const App = () => {
     }
   };
 
-  const addVideo = (e) => {
+  const addVideo = async (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
     const title = data.get('title');
@@ -118,35 +109,25 @@ const App = () => {
     if (title && url) {
       if (url.includes('https://www.youtube.com/watch?v=')) {
         let tempArr = [...videos];
-        let newVideo = {};
-        if (tempArr.length > 0) {
-          tempArr.sort((a, b) => (a.id > b.id ? 1 : b.id > a.id ? -1 : 0));
-          newVideo = {
-            id: tempArr[tempArr.length - 1].id + 1,
-            title: title,
-            url: url,
-            likes: 0,
-            dislikes: 0,
-            uploader: author || 'Anonymous',
-          };
-        } else {
-          newVideo = {
-            id: 1,
-            title: title,
-            url: url,
-            likes: 0,
-            dislikes: 0,
-            uploader: author || 'Anonymous',
-          };
-        }
+        const newVideo = {
+          id: getId(videos),
+          title: title,
+          url: url,
+          uploader: author || 'Anonymous',
+          likes: 0,
+          dislikes: 0,
+        };
 
-        //console.log(newVideo);
-        tempArr.push(newVideo);
+        await fetch('/videos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newVideo),
+        });
+
         Array.from(document.querySelectorAll('input')).forEach(
           (input) => (input.value = '')
         );
-
-        //tempArr.splice(0, 0, newVideo); //To add recently added video on top of the array list
+        tempArr.push(newVideo);
         setVideos(tempArr);
       } else {
         alert('Invalid Url!');
@@ -160,10 +141,14 @@ const App = () => {
     setDescending(!descending);
   };
 
-  if (videos.length > 0) {
-    //videos.sort((a, b) => (a.id > b.id ? -1 : b.id > a.id ? 1 : 0));
-    //videos.sort((a, b) => (a.likes > b.likes ? -1 : b.likes > a.likes ? 1 : 0)); //DESC
+  const getId = (arr) => {
+    const sortedArr = arr.sort((a, b) =>
+      a.id > b.id ? 1 : b.id > a.id ? -1 : 0
+    );
+    return sortedArr[sortedArr.length - 1].id + 1;
+  };
 
+  if (videos.length > 0) {
     return (
       <div className='main-container'>
         <Header addVideo={addVideo} changeSortOrder={changeSortOrder} />
@@ -197,48 +182,4 @@ const App = () => {
   }
 };
 
-/*
-const fetchedVideos = [
-  {
-    id: 1,
-    title: 'Never Gonna Give You Up',
-    url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    likes: 23,
-    dislikes: 2,
-    uploader: 'Simba Pfaira',
-  },
-  {
-    id: 2,
-    title: 'The Coding Train',
-    url: 'https://www.youtube.com/watch?v=HerCR8bw_GE',
-    likes: 2006,
-    dislikes: 29,
-    uploader: 'Daryl Simon',
-  },
-  {
-    id: 3,
-    title: 'Mac & Cheese | Basics with Babish',
-    url: 'https://www.youtube.com/watch?v=FUeyrEN14Rk',
-    likes: 790789,
-    dislikes: 950000,
-    uploader: 'Carl Master Chibaba Chenyuchi',
-  },
-  {
-    id: 4,
-    title: 'Videos for Cats to Watch - 8 Hour Bird Bonanza',
-    url: 'https://www.youtube.com/watch?v=xbs7FT7dXYc',
-    likes: 3468798563,
-    dislikes: 567789,
-    uploader: 'Cat Lover',
-  },
-  {
-    id: 5,
-    title:
-      "Learn Unity - Beginner's Game Development Course For Those People Who Love Games like Me And Naison Chikati",
-    url: 'https://www.youtube.com/watch?v=gB1F9G0JXOo',
-    likes: 78234563,
-    dislikes: 22345,
-    uploader: 'Game Boy',
-  },
-];*/
 export default App;

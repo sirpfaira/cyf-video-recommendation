@@ -9,7 +9,8 @@
   --icons-color: rgb(16, 88, 63);
   --button-background: rgb(174, 206, 119);
   --warning-color: rgb(245, 121, 121);
-  --pressed-button: rgb(10, 3, 105);
+  /*--pressed-button: rgb(10, 3, 105);*/
+  --pressed-button: #03a9f4;
 }
 @import url('https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap');
 
@@ -345,7 +346,7 @@
   z-index: 1;
 }
 #button-3 .knobs:before {
-  content: 'ASC';
+  content: 'Asc';
   position: absolute;
   top: 1px;
   bottom: 1px;
@@ -353,7 +354,8 @@
   width: 2.2rem;
   height: 2.3rem;
   color: #fff;
-  font-size: 10px;
+  /*font-size: 10px;*/
+  font-size: 0.85rem;
   font-weight: bold;
   text-align: center;
   line-height: 1;
@@ -373,12 +375,14 @@
 }
 
 #button-3 .checkbox:checked + .knobs:before {
-  content: 'DESC';
+  content: 'Desc';
   left: 42px;
   right: 4px;
-  background-color: #f44336;
+  /*background-color: #f44336;*/
+  background-color: #03a9f4;
 }
 
 #button-3 .checkbox:checked ~ .layer {
-  background-color: #fcebeb;
+  /*background-color: #fcebeb;*/
+  background-color: #ebf7fc;
 }
