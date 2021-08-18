@@ -3,6 +3,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+const path = require('path');
+
 //const cors = require('cors');
 //app.use(cors());
 
@@ -10,20 +12,12 @@ require('dotenv').config();
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  // create connection to database
+  connectionString: process.env.DATABASE_URL, // use DATABASE_URL environment variable from Heroku app
+  ssl: {
+    rejectUnauthorized: false, // don't check for SSL cert
+  },
 });
-
-//const videos = require('./data.json');
-
-/*app.get('/', (req, res) => {
-  res
-    .status(200)
-    .json('You have hit the video recommendation API. Go to /videos');
-});*/
 
 app.get('/videos', async (req, res) => {
   const { order } = req.query;
