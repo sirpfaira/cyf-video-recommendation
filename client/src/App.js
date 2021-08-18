@@ -142,10 +142,14 @@ const App = () => {
   };
 
   const getId = (arr) => {
-    const sortedArr = arr.sort((a, b) =>
-      a.id > b.id ? 1 : b.id > a.id ? -1 : 0
-    );
-    return sortedArr[sortedArr.length - 1].id + 1;
+    if (arr.length > 0) {
+      const sortedArr = arr.sort((a, b) =>
+        a.id > b.id ? 1 : b.id > a.id ? -1 : 0
+      );
+      return sortedArr[sortedArr.length - 1].id + 1;
+    } else {
+      return 1;
+    }
   };
 
   if (videos.length > 0) {
