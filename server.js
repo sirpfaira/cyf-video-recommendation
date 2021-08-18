@@ -19,11 +19,11 @@ const pool = new Pool({
 
 //const videos = require('./data.json');
 
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
   res
     .status(200)
     .json('You have hit the video recommendation API. Go to /videos');
-});
+});*/
 
 app.get('/videos', async (req, res) => {
   const { order } = req.query;
