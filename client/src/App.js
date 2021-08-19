@@ -45,8 +45,6 @@ const App = () => {
   };
 
   const likeVideo = async (e) => {
-    const videoId = Number(e.currentTarget.getAttribute('data-id'));
-
     const addLike = async (id) => {
       const vid = videos.find((el) => Number(el.id) === Number(id));
       if (vid) {
@@ -54,13 +52,16 @@ const App = () => {
           likes: vid.likes + 1,
           dislikes: vid.dislikes,
         };
-        await fetch(`/videos/${id}`, {
+        const res = await fetch(`/videos/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newVid),
         });
+        console.log(res);
       }
     };
+
+    const videoId = Number(e.currentTarget.getAttribute('data-id'));
 
     if (videoId) {
       let tempArr = [...videos];
@@ -87,6 +88,21 @@ const App = () => {
     }
   };
   const dislikeVideo = (e) => {
+    const addDislike = async (id) => {
+      const vid = videos.find((el) => Number(el.id) === Number(id));
+      if (vid) {
+        const newVid = {
+          likes: vid.likes,
+          dislikes: vid.dislikes + 1,
+        };
+        await fetch(`/videos/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newVid),
+        });
+      }
+    };
+
     const videoId = Number(e.currentTarget.getAttribute('data-id'));
 
     if (videoId) {
@@ -108,7 +124,7 @@ const App = () => {
             setDislikedVideos((preState) => preState.concat(videoId));
           }
           setVideos(tempArr);
-          return;
+          addDislike(videoId);
         }
       });
     }
