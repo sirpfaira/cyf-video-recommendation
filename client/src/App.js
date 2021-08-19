@@ -44,8 +44,23 @@ const App = () => {
     }
   };
 
-  const likeVideo = (e) => {
+  const likeVideo = async (e) => {
     const videoId = Number(e.currentTarget.getAttribute('data-id'));
+
+    const addLike = async (id) => {
+      const vid = videos.find((el) => Number(el.id) === Number(id));
+      if (vid) {
+        const newVid = {
+          likes: vid.likes + 1,
+          dislikes: vid.dislikes,
+        };
+        await fetch(`/videos/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newVid),
+        });
+      }
+    };
 
     if (videoId) {
       let tempArr = [...videos];
@@ -65,8 +80,8 @@ const App = () => {
             video.likes = oldLikes + 1;
             setLikedVideos((preState) => preState.concat(videoId));
           }
+          addLike(videoId);
           setVideos(tempArr);
-          return;
         }
       });
     }

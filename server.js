@@ -67,6 +67,34 @@ app.post('/videos', async (req, res) => {
   }
 });
 
+app.put('/videos/:videoId', async (req, res) => {
+  const { videoId } = req.params;
+  const { likes, dislikes } = req.body;
+  try {
+    if (likes && dislikes) {
+      const myVideo = await pool.query(`SELECT * FROM videos WHERE id = $1`, [
+        videoId,
+      ]);
+      if (myVideo.rowCount > 0) {
+        await pool.query(
+          `UPDATE videos SET likes = $1, dislikes = $2 WHERE id = $3;`,
+          [likes, dislikes, videoId]
+        );
+        res.status(200).json(`Video was updated successfully!`);
+      } else {
+        res
+          .status(400)
+          .json(`The provided video ID '${videoId}' does not exist!`);
+      }
+    } else {
+      res.status(400).json(`Update information was not provided!`);
+    }
+  } catch (e) {
+    res.status(400).json(`An error occurred!`);
+    console.log(e);
+  }
+});
+
 app.delete('/videos/:videoId', async (req, res) => {
   const { videoId } = req.params;
   try {
