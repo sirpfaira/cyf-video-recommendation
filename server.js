@@ -67,7 +67,7 @@ app.post('/videos', async (req, res) => {
   }
 });
 
-app.put('/videos/:videoId', async (req, res) => {
+app.patch('/videos/:videoId', async (req, res) => {
   const { videoId } = req.params;
   const { likes, dislikes } = req.body;
   try {
