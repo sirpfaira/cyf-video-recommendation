@@ -49,8 +49,8 @@ const App = () => {
       const vid = videos.find((el) => Number(el.id) === Number(id));
       if (vid) {
         const newVid = {
-          likes: vid.likes + 1,
-          dislikes: vid.dislikes,
+          likes: Number(vid.likes) + 1,
+          dislikes: Number(vid.dislikes),
         };
         const res = await fetch(`/videos/${id}`, {
           method: 'PATCH',
@@ -92,11 +92,11 @@ const App = () => {
       const vid = videos.find((el) => Number(el.id) === Number(id));
       if (vid) {
         const newVid = {
-          likes: vid.likes,
-          dislikes: vid.dislikes + 1,
+          likes: Number(vid.likes),
+          dislikes: Number(vid.dislikes) + 1,
         };
         await fetch(`/videos/${id}`, {
-          method: 'PUT',
+          method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newVid),
         });
